@@ -1,0 +1,1586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Yenepoya World</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { overflow-x: hidden; width: 100%; }
+  body { font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; color: #333; }
+
+  /* Top contact bar */
+  .topbar {
+    background: #cfe9ee;
+    text-align: center;
+    padding: 18px 0;
+    font-size: 15px;
+    letter-spacing: 0.3px;
+    color: #333;
+  }
+
+  /* Navigation */
+  .navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 40px;
+    background: #fff;
+    flex-wrap: wrap;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .logo img {
+    height: 90px;
+    width: auto;
+    display: block;
+  }
+
+  nav ul {
+    display: flex;
+    list-style: none;
+    gap: 45px;
+    flex-wrap: wrap;
+  }
+
+  nav a {
+    text-decoration: none;
+    color: #333;
+    font-size: 16px;
+    letter-spacing: 0.2px;
+  }
+
+  nav li:first-child a {
+    color: #2c3e50;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #aee0ea;
+  }
+
+  /* Hero image row */
+  .hero-row {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr;
+    gap: 6px;
+  }
+
+  .hero-row img {
+    width: 100%;
+    height: 460px;
+    object-fit: cover;
+    display: block;
+  }
+
+  @media (max-width: 900px) {
+    .navbar { justify-content: center; text-align: center; }
+    nav ul { justify-content: center; gap: 24px; }
+    .hero-row { grid-template-columns: 1fr; }
+    .hero-row img { height: 280px; }
+  }
+
+  /* Intro / title section with decorative corner lines */
+  .intro {
+    position: relative;
+    padding: 70px 40px 40px;
+    text-align: center;
+  }
+
+  .intro-title {
+    font-family: 'Segoe UI', 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 56px;
+    color: #3a3a3a;
+    letter-spacing: 1px;
+    display: inline-block;
+    position: relative;
+    z-index: 2;
+    background: #fff;
+    padding: 0 20px;
+    margin: 0 auto;
+  }
+
+  .intro-subtitle {
+    position: relative;
+    z-index: 2;
+    max-width: 680px;
+    margin: 22px auto 0;
+    font-size: 17px;
+    line-height: 1.6;
+    color: #555;
+  }
+
+  .line-h-left {
+    position: absolute;
+    top: 105px;
+    left: 170px;
+    width: 30%;
+    max-width: 320px;
+    height: 1px;
+    background: #444;
+    z-index: 1;
+  }
+
+  .line-h-right {
+    position: absolute;
+    top: 105px;
+    right: 0;
+    width: 34%;
+    max-width: 380px;
+    height: 1px;
+    background: #e8a9c0;
+    z-index: 1;
+  }
+
+  /* Uses the SAME fixed 170px x-position as .glance-line-top-v and
+     .gallery-line-v below (rather than a %, which drifted out of
+     alignment at different viewport widths) so the accent line reads
+     as one continuous vertical stroke from the title all the way
+     down to the "At A Glance" heading. */
+  .line-v {
+    position: absolute;
+    top: 105px;
+    left: 170px;
+    width: 1px;
+    bottom: 0;
+    background: #444;
+    z-index: 1;
+  }
+
+  .social-icons {
+    position: absolute;
+    top: 40px;
+    right: 40px;
+    display: flex;
+    gap: 14px;
+  }
+
+  .social-icons a {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .social-icons svg {
+    width: 15px;
+    height: 15px;
+    fill: #fff;
+  }
+
+  /* Gallery row */
+  .gallery-row {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+    padding: 0 40px;
+  }
+
+  /* Bridges the vertical accent line through the gallery row, at the
+     same fixed 170px x-position as .line-v (above) and
+     .glance-line-top-v (below), so it doesn't disappear for the
+     height of the gallery. Sits behind the photos (z-index 0 vs the
+     row's z-index 2) so it only shows in the 8px gaps between them. */
+  .gallery-line-v {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 170px;
+    width: 1px;
+    background: #444;
+    z-index: -1;
+  }
+
+  .gallery-row img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* At a Glance section */
+  .at-a-glance {
+    position: relative;
+    padding: 90px 40px 60px 100px;
+  }
+
+  .glance-line-top-v {
+    position: absolute;
+    top: 0;
+    left: 170px;
+    width: 0.5px;
+    height: 90px;
+    background: #444;
+  }
+
+  .at-a-glance h2 {
+    font-size: 34px;
+    font-weight: 600;
+    color: #3a3a3a;
+    margin-bottom: 12px;
+  }
+
+  .at-a-glance p {
+    font-size: 16px;
+    color: #555;
+  }
+
+  .cloud-icon {
+    position: absolute;
+    right: 140px;
+    bottom: 60px;
+    width: 60px;
+    height: 60px;
+    opacity: 0.5;
+  }
+
+  .cloud-icon svg { width: 100%; height: 100%; fill: #cfd8dc; }
+
+  /* Stats box */
+  .stats-box {
+    position: relative;
+    margin: 40px 300px 0 0;
+    border: 1px solid #333;
+    padding: 40px 50px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px 20px;
+  }
+
+  .stat {
+    min-width: 0;
+  }
+
+  .stat .num {
+    font-size: 42px;
+    font-weight: 700;
+    color: #b9d3f2;
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+
+  .stat .label {
+    font-size: 16px;
+    color: #555;
+  }
+
+  .glance-line-h {
+    position: absolute;
+    top: 34px;
+    left: 100%;
+    width: 220px;
+    height: 1px;
+    background: #444;
+  }
+
+  .glance-line-v2 {
+    position: absolute;
+    top: 34px;
+    left: calc(100% + 220px);
+    width: 1px;
+    height: 230px;
+    background: #444;
+  }
+
+  .quote {
+    position: relative;
+    z-index: 2;
+    margin: 90px 80px 0 0;
+    text-align: right;
+    font-size: 24px;
+    font-style: italic;
+    font-weight: 700;
+    color: #444;
+  }
+
+  .glance-image {
+    position: relative;
+    z-index: 5;
+    margin-top: 40px;
+    margin-bottom: -150px;
+  }
+
+  .glance-image img {
+    max-width: 360px;
+    display: block;
+  }
+
+  /* CTA / footer banner */
+  .cta-banner {
+    position: relative;
+    background: #aee0ea;
+    min-height: 260px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 80px 0 0;
+    overflow: hidden;
+  }
+
+  .cta-banner::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: #aee0ea;
+  }
+
+  .cta-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+  }
+
+  .cta-content h3 {
+    font-size: 26px;
+    font-weight: 600;
+    color: #3a3a3a;
+  }
+
+  .cta-content a {
+    display: inline-block;
+    background: #fff;
+    color: #333;
+    text-decoration: none;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+    padding: 14px 30px;
+    border: 1px solid #333;
+  }
+
+  @media (max-width: 900px) {
+    .intro-title { font-size: 34px; }
+    .line-h-left, .line-h-right, .line-v, .gallery-line-v { display: none; }
+    .gallery-row { grid-template-columns: repeat(2, 1fr); }
+    .gallery-row img { height: 160px; }
+    .at-a-glance { padding-left: 40px; }
+    .social-icons { position: static; justify-content: center; margin-bottom: 20px; }
+    .stats-box { margin-right: 0; padding: 30px; gap: 24px 20px; grid-template-columns: repeat(2, 1fr); }
+    .glance-line-h, .glance-line-v2 { display: none; }
+    .stat .num { font-size: 30px; }
+    .quote { text-align: left; font-size: 20px; margin: 40px 0 0; }
+    .cta-banner { flex-direction: column; padding: 40px 20px; text-align: center; min-height: auto; }
+    .cta-banner::before { background: #aee0ea; }
+    .glance-image { position: static; margin-bottom: 20px; text-align: center; }
+    .glance-image img { margin: 0 auto; }
+    .cta-content { flex-direction: column; gap: 16px; }
+  }
+
+  @media (max-width: 480px) {
+    .stats-box { grid-template-columns: 1fr; padding: 24px; }
+    .stat .num { font-size: 28px; white-space: normal; }
+    .stat .label { white-space: normal; }
+  }
+
+  /* ============ Testimonials section (FIXED) ============ */
+  .testimonials {
+    position: relative;
+    background-color: #fbfbfc;
+    background-image:
+      linear-gradient(to right, #f0f8ff 1px, transparent 1px),
+      linear-gradient(to bottom, #f0f8ff 1px, transparent 1px);
+    background-size: 32px 32px;
+    background-position: center top;
+    padding: 90px 0 130px;
+  }
+
+  .testimonials-inner {
+    position: relative;
+    max-width: 1580px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    align-items: start;
+    gap: 30px;
+  }
+
+  .testimonials-text {
+    padding-top: 10px;
+  }
+
+  .chat-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #eef6f8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .chat-icon svg { width: 18px; height: 18px; fill: none; stroke: #333; stroke-width: 1.5; }
+
+  .testimonials-text h2 {
+    font-size: 34px;
+    font-weight: 700;
+    color: #2c2c2c;
+  }
+
+  .testimonials-text p {
+    margin-top: 8px;
+    font-size: 15px;
+    color: #777;
+  }
+
+  /* Two vertical auto-sliding carousels, equal width, flush side-by-side */
+  .testimonials-images {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    height: 400px;
+  }
+
+  .img-slider {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .img-slider-track {
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+    height: 300%;
+    gap: 0;
+    animation: slide-vertical 6s linear infinite;
+  }
+
+  .img-slider-right .img-slider-track {
+    animation-duration: 4.5s;
+  }
+
+  @keyframes slide-vertical {
+    0%    { transform: translateY(0); }
+    28%   { transform: translateY(0); }
+    33%   { transform: translateY(-33.333%); }
+    61%   { transform: translateY(-33.333%); }
+    66%   { transform: translateY(-66.666%); }
+    94%   { transform: translateY(-66.666%); }
+    99.9% { transform: translateY(-66.666%); }
+    100%  { transform: translateY(0); }
+  }
+
+  .testimonials-images img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Quote box spans the full row (grid-column 1 / -1) so its left edge
+     sits flush with the section's left edge / the text column above it,
+     and it overlaps upward into the bottom portion of the two sliders */
+  .testimonial-quote-box {
+    position: relative;
+    z-index: 3;
+    grid-column: 1 / -1;
+    width: 62%;
+    margin-top: -190px;
+    background: #cfe9ee;
+    padding: 46px 60px 46px 44px;
+    box-shadow: 0 14px 30px rgba(20, 60, 75, 0.12);
+  }
+
+  .quote-mark {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 60px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .quote-author {
+    position: absolute;
+    top: 40px;
+    right: 44px;
+    font-size: 13px;
+    font-style: italic;
+    color: #555;
+  }
+
+  .quote-text {
+    font-size: 15px;
+    line-height: 1.75;
+    color: #3f3f3f;
+    max-width: 480px;
+  }
+
+  /* Arrow button anchored to the quote box's right edge, straddling
+     the seam between the quote box and the images above it */
+  .testimonial-arrow {
+    position: absolute;
+    z-index: 4;
+    right: -26px;
+    top: 0;
+    transform: translateY(-50%);
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: #fff;
+    border: none;
+    box-shadow: 0 8px 20px rgba(20, 60, 75, 0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .testimonial-arrow svg { width: 18px; height: 18px; fill: none; stroke: #333; stroke-width: 1.8; }
+
+  @media (max-width: 900px) {
+    .testimonials { padding: 50px 20px 60px; }
+    .testimonials-inner { grid-template-columns: 1fr; padding: 0; gap: 0; }
+    .testimonials-text { padding-right: 0; margin-bottom: 24px; }
+    .testimonials-images { grid-template-columns: 1fr 1fr; height: 280px; }
+    .testimonial-quote-box { grid-column: 1; width: 100%; margin-top: 24px; padding: 34px 26px; }
+    .quote-author { position: static; display: block; margin-bottom: 10px; text-align: right; }
+    .testimonial-arrow { right: 26px; top: auto; bottom: -26px; transform: none; }
+  }
+  /* ============ end testimonials fix ============ */
+
+  .grid-bg-wrap {
+    position: relative;
+    background-color: #fbfbfc;
+    background-image:
+      linear-gradient(to right, #f0f8ff 1px, transparent 1px),
+      linear-gradient(to bottom, #f0f8ff 1px, transparent 1px);
+    background-size: 32px 32px;
+    background-position: center top;
+  }
+
+  /* Inquire Today section */
+  .inquire {
+    position: relative;
+    padding: 90px 40px 70px;
+    text-align: center;
+    background-color: #fbfbfc;
+    background-image:
+      url('images/pattern-colorful.svg'),
+      linear-gradient(to right, #f0f8ff 1px, transparent 1px),
+      linear-gradient(to bottom, #f0f8ff 1px, transparent 1px);
+    background-repeat: repeat, repeat, repeat;
+    background-size: 300px 300px, 32px 32px, 32px 32px;
+    background-position: center top, center top, center top;
+  }
+
+  .inquire-icon {
+    width: 32px;
+    height: 32px;
+    margin: 0 auto 18px;
+    opacity: 0.7;
+  }
+
+  .inquire-icon svg { width: 100%; height: 100%; fill: none; stroke: #333; stroke-width: 1.4; }
+
+  .inquire h2 {
+    font-size: 30px;
+    font-weight: 600;
+    color: #3a3a3a;
+  }
+
+  .inquire p {
+    margin-top: 8px;
+    font-size: 15px;
+    color: #777;
+  }
+
+  .inquire-panel {
+    max-width: 1100px;
+    margin: 50px auto 0;
+    border: 1px solid #e3e3e3;
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    background: #fff;
+  }
+
+  .mission-intro {
+    background: #cfe9ee;
+    padding: 44px 40px;
+    text-align: left;
+    position: relative;
+  }
+
+  .mission-intro h3 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #2c2c2c;
+    margin-bottom: 14px;
+  }
+
+  .mission-intro p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #444;
+    max-width: 320px;
+  }
+
+  .mission-intro .learn-more {
+    display: inline-block;
+    margin-top: 24px;
+    background: #fff;
+    color: #333;
+    text-decoration: none;
+    font-size: 13px;
+    padding: 10px 22px;
+    border: 1px solid #333;
+  }
+
+  .mission-intro .book-icon {
+    position: absolute;
+    right: 36px;
+    bottom: 40px;
+    width: 70px;
+    height: 70px;
+    opacity: 0.9;
+  }
+
+  .mission-intro .book-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  .mission-list {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+  }
+
+  .mission-item {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 18px 28px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .mission-item:last-child { border-bottom: none; }
+
+  .mission-item.active { background: #f7fbfc; border-left: 3px solid #8fc7dc; }
+
+  .mission-item h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #2c2c2c;
+    margin-bottom: 4px;
+  }
+
+  .mission-item p {
+    font-size: 13px;
+    color: #888;
+    line-height: 1.5;
+  }
+
+  .mission-item .arrow {
+    flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mission-item .arrow svg { width: 12px; height: 12px; fill: none; stroke: #333; stroke-width: 1.6; }
+
+  /* Quick links tiles */
+  .quick-links {
+    position: relative;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 40px 90px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .quick-link {
+    background: #cfe9ee;
+    padding: 26px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+  }
+
+  .quick-link.highlight { background: #8fc7dc; }
+
+  .quick-link svg { width: 26px; height: 26px; fill: none; stroke: #fff; stroke-width: 1.5; flex-shrink: 0; }
+
+  .quick-link span {
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+  }
+
+  /* Secondary CTA banner with photo background */
+  .contact-banner {
+    position: relative;
+    max-width: 1100px;
+    margin: 0 auto 100px;
+    padding: 0 40px;
+  }
+
+  .contact-banner-inner {
+    position: relative;
+    min-height: 474px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 50px;
+    background-color: #2c2c2c;
+    background-image: linear-gradient(90deg, rgba(20,20,20,0.75) 0%, rgba(20,20,20,0.55) 60%, rgba(20,20,20,0.35) 100%), url('images/teaching.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  .contact-banner-inner h3 {
+    color: #fff;
+    font-size: 26px;
+    font-weight: 700;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .contact-banner-inner p {
+    color: #eee;
+    font-size: 14px;
+    margin: 10px auto 0;
+    max-width: 400px;
+  }
+
+  .contact-banner-inner a {
+    display: inline-block;
+    margin: 22px auto 0;
+    background: #fff;
+    color: #333;
+    text-decoration: none;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    padding: 12px 28px;
+  }
+
+  /* Discover Further section */
+  .discover-further {
+    position: relative;
+    padding: 30px 40px 100px;
+    text-align: center;
+  }
+
+  .discover-icon {
+    width: 30px;
+    height: 30px;
+    margin: 0 auto 18px;
+    opacity: 0.7;
+  }
+
+  .discover-icon svg { width: 100%; height: 100%; fill: none; stroke: #333; stroke-width: 1.4; }
+
+  .discover-further h2 {
+    font-size: 30px;
+    font-weight: 600;
+    color: #3a3a3a;
+  }
+
+  .discover-further p {
+    margin-top: 8px;
+    font-size: 15px;
+    color: #777;
+  }
+
+  .discover-further {
+    padding: 30px 0 0;
+  }
+
+  .discover-further > .discover-icon,
+  .discover-further > h2,
+  .discover-further > p {
+    padding: 0 40px;
+  }
+
+  .discover-bg-full {
+    position: relative;
+    left: 50%;
+    right: 50%;
+    width: 100vw;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    margin-top: 40px;
+    padding-bottom: 60px;
+    background-color: #aee0ea;
+    background-image: url('images/component-background.png');
+    background-repeat: repeat;
+    background-size: 180px 180px;
+  }
+
+  .discover-panel {
+    position: relative;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 70px 60px 0;
+    overflow: hidden;
+  }
+
+  .discover-cards {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 36px;
+  }
+
+  .discover-connector {
+    position: absolute;
+    top: 168px;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .discover-connector line {
+    stroke: #2c6f85;
+    stroke-width: 1.5;
+    stroke-dasharray: 0 1;
+  }
+
+  .discover-connector circle {
+    fill: #fff;
+    stroke: #2c6f85;
+    stroke-width: 1.5;
+  }
+
+  .discover-card {
+    position: relative;
+    z-index: 2;
+    background: #fff;
+    text-align: center;
+    padding-bottom: 26px;
+    box-shadow: 0 10px 26px rgba(20, 60, 75, 0.12);
+  }
+
+  .discover-card .thumb {
+    position: relative;
+  }
+
+  .discover-card .thumb img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .discover-card .badge {
+    position: absolute;
+    left: 0;
+    bottom: 0px;
+    width: 60px;
+    height: 60px;
+    border-radius: 0 50% 0 0;
+    background: #c9e9ee;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    padding: 8px 0 8px 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  }
+
+  .discover-card .badge img {
+    width: 60%;
+    height: 60%;
+    object-fit: contain;
+    display: block;
+  }
+
+  .discover-card h4 {
+    margin-top: 34px;
+    font-size: 17px;
+    font-weight: 700;
+    color: #2c2c2c;
+  }
+
+  .discover-card p {
+    margin-top: 4px;
+    font-size: 13px;
+    color: #888;
+  }
+
+  .discover-btn-wrap {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    margin-top: 44px;
+  }
+
+  .discover-btn-wrap a {
+    display: inline-block;
+    background: #fff;
+    color: #333;
+    text-decoration: none;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    padding: 12px 34px;
+    border: 1px solid #333;
+  }
+
+  @media (max-width: 900px) {
+    .inquire-panel { grid-template-columns: 1fr; }
+    .quick-links { grid-template-columns: 1fr; }
+    .grid-bg-wrap { background-size: 24px 24px; }
+    .discover-panel { padding: 50px 24px 40px; }
+    .discover-cards { grid-template-columns: 1fr; gap: 46px; }
+    .discover-connector { display: none; }
+  }
+
+  .inquire-form-intro {
+    position: relative;
+    padding: 70px 40px 0;
+    text-align: center;
+    background-color: #fbfbfc;
+    background-image:
+      url('images/pattern-colorful.svg'),
+      linear-gradient(to right, #f0f8ff 1px, transparent 1px),
+      linear-gradient(to bottom, #f0f8ff 1px, transparent 1px);
+    background-repeat: repeat, repeat, repeat;
+    background-size: 300px 300px, 32px 32px, 32px 32px;
+    background-position: center top, center top, center top;
+  }
+
+  .inquire-form-intro .inquire-icon {
+    width: 32px;
+    height: 32px;
+    margin: 0 auto 18px;
+    opacity: 0.7;
+  }
+
+  .inquire-form-intro .inquire-icon svg { width: 100%; height: 100%; fill: none; stroke: #333; stroke-width: 1.4; }
+
+  .inquire-form-intro h2 {
+    font-size: 30px;
+    font-weight: 600;
+    color: #3a3a3a;
+  }
+
+  .inquire-form-intro p {
+    margin-top: 8px;
+    padding-bottom: 60px;
+    font-size: 15px;
+    color: #777;
+  }
+
+  .inquire-form {
+    position: relative;
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    background-color: #2c2c2c;
+    background-image: url('images/learning.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  .inquire-form-card {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 480px;
+    padding: 50px 46px;
+    background: rgba(255, 255, 255, 0.55);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+  }
+
+  .form-field {
+    position: relative;
+    padding: 12px 0 12px;
+    border-bottom: 1px solid rgba(60, 60, 60, 0.35);
+  }
+
+  .form-field + .form-field { margin-top: 4px; }
+
+  .form-field label {
+    display: block;
+    font-size: 14px;
+    color: #333;
+  }
+
+  .form-field input,
+  .form-field textarea {
+    width: 100%;
+    margin-top: 4px;
+    border: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    color: #333;
+    outline: none;
+    resize: none;
+  }
+
+  .inquire-form-card button {
+    display: inline-block;
+    margin-top: 30px;
+    background: #fff;
+    color: #333;
+    text-decoration: none;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    padding: 12px 34px;
+    border: 1px solid #333;
+    cursor: pointer;
+  }
+
+  .site-close {
+    text-align: center;
+    padding: 60px 20px;
+  }
+
+  .site-close .mark {
+    width: 100px;
+    height: auto;
+    display: block;
+    margin: 0 auto 10px;
+  }
+
+  .site-close .brand-name {
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    color: #333;
+    line-height: 1.4;
+  }
+
+  @media (max-width: 600px) {
+    .inquire-form-card { padding: 36px 26px; }
+  }
+
+  .footer-cta {
+    position: relative;
+    background-color: #aee0ea;
+    background-image: url('images/footer.png');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    text-align: center;
+    padding: 70px 20px 80px;
+    overflow: hidden;
+  }
+
+  .footer-cta-corner {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 260px;
+    height: 260px;
+    pointer-events: none;
+  }
+
+  .footer-cta h2 {
+    position: relative;
+    z-index: 2;
+    font-size: 32px;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .footer-cta p {
+    position: relative;
+    z-index: 2;
+    max-width: 460px;
+    margin: 14px auto 0;
+    font-size: 14px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .footer-cta a {
+    position: relative;
+    z-index: 2;
+    display: inline-block;
+    margin-top: 26px;
+    background: transparent;
+    color: #fff;
+    text-decoration: none;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    padding: 13px 32px;
+    border: 1px solid #fff;
+  }
+
+  .footer-main {
+    background: #fff;
+    padding: 50px 40px 30px;
+  }
+
+  .footer-links-row {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr) auto;
+    gap: 30px;
+    align-items: start;
+  }
+
+  .footer-col {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .footer-col a {
+    font-size: 14px;
+    color: #444;
+    text-decoration: none;
+  }
+
+  .footer-social {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    justify-content: flex-end;
+  }
+
+  .footer-social a {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #f2f2f2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .footer-social svg {
+    width: 15px;
+    height: 15px;
+    fill: #333;
+  }
+
+  .footer-divider {
+    max-width: 1200px;
+    margin: 40px auto 0;
+    border: none;
+    border-top: 1px solid #e5e5e5;
+  }
+
+  .footer-copyright {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px 0 10px;
+    text-align: center;
+    font-size: 13px;
+    color: #888;
+  }
+
+  @media (max-width: 900px) {
+    .footer-links-row { grid-template-columns: 1fr 1fr; }
+    .footer-social { grid-column: 1 / span 2; justify-content: center; margin-top: 10px; }
+  }
+
+  @media (max-width: 600px) {
+    .footer-links-row { grid-template-columns: 1fr; }
+    .footer-social { grid-column: 1; justify-content: center; }
+    .footer-cta h2 { font-size: 26px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="topbar">yenopoyaworld@email.com</div>
+
+  <div class="navbar">
+    <div class="logo">
+      <img src="images/logo.png" alt="The Yenepoya World logo">
+    </div>
+
+    <nav>
+      <ul>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#space">Our Space</a></li>
+        <li><a href="#curriculum">Curriculum</a></li>
+        <li><a href="#admissions">Admissions</a></li>
+        <li><a href="#contact">Contact Us</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="hero-row">
+    <img src="images/hero-1.png" alt="Student writing">
+    <img src="images/hero-2.png" alt="Classroom desks">
+    <img src="images/hero-3.png" alt="Classroom with light">
+  </div>
+
+  <section class="intro">
+    <div class="line-h-left"></div>
+    <div class="line-h-right"></div>
+    <div class="line-v"></div>
+
+    <div class="social-icons">
+      <a href="#" aria-label="Facebook">
+        <svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.4h-1.2c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12Z"/></svg>
+      </a>
+      <a href="#" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" fill-rule="evenodd" clip-rule="evenodd"><path d="M12 2c-2.7 0-3.1 0-4.1.1-1.1.1-1.8.2-2.4.4a5 5 0 0 0-1.8 1.2A5 5 0 0 0 2.5 5.5c-.2.6-.4 1.3-.4 2.4C2 8.9 2 9.3 2 12s0 3.1.1 4.1c.1 1.1.2 1.8.4 2.4a5 5 0 0 0 1.2 1.8 5 5 0 0 0 1.8 1.2c.6.2 1.3.4 2.4.4C8.9 22 9.3 22 12 22s3.1 0 4.1-.1c1.1-.1 1.8-.2 2.4-.4a5 5 0 0 0 1.8-1.2 5 5 0 0 0 1.2-1.8c.2-.6.4-1.3.4-2.4.1-1 .1-1.4.1-4.1s0-3.1-.1-4.1c-.1-1.1-.2-1.8-.4-2.4a5 5 0 0 0-1.2-1.8A5 5 0 0 0 18.5 2.5c-.6-.2-1.3-.4-2.4-.4C15.1 2 14.7 2 12 2Zm0 1.8c2.6 0 3 0 4 .1 1 .1 1.5.2 1.9.4.5.2.8.4 1.2.7.4.4.6.7.7 1.2.2.4.3.9.4 1.9.1 1 .1 1.4.1 4s0 3-.1 4c-.1 1-.2 1.5-.4 1.9-.2.5-.4.8-.7 1.2-.4.4-.7.6-1.2.7-.4.2-.9.3-1.9.4-1 .1-1.4.1-4 .1s-3 0-4-.1c-1-.1-1.5-.2-1.9-.4a3.3 3.3 0 0 1-1.2-.7 3.3 3.3 0 0 1-.7-1.2c-.2-.4-.3-.9-.4-1.9-.1-1-.1-1.4-.1-4s0-3 .1-4c.1-1 .2-1.5.4-1.9.2-.5.4-.8.7-1.2.4-.4.7-.6 1.2-.7.4-.2.9-.3 1.9-.4 1-.1 1.4-.1 4-.1Zm0 3.05a5.15 5.15 0 1 0 0 10.3 5.15 5.15 0 0 0 0-10.3Zm0 1.8a3.35 3.35 0 1 1 0 6.7 3.35 3.35 0 0 1 0-6.7Zm5.35-3.6a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4Z"/></svg>
+      </a>
+      <a href="#" aria-label="YouTube">
+        <svg viewBox="0 0 24 24"><path d="M23 12s0-3.6-.5-5.3a3 3 0 0 0-2.1-2.1C18.7 4 12 4 12 4s-6.7 0-8.4.6A3 3 0 0 0 1.5 6.7C1 8.4 1 12 1 12s0 3.6.5 5.3a3 3 0 0 0 2.1 2.1C5.3 20 12 20 12 20s6.7 0 8.4-.6a3 3 0 0 0 2.1-2.1C23 15.6 23 12 23 12ZM10 15.5v-7l6 3.5-6 3.5Z"/></svg>
+      </a>
+    </div>
+
+    <h1 class="intro-title">The Yenopoya World</h1>
+    <p class="intro-subtitle">A supportive and stimulating environment that fosters academic excellence, character development, and a love for learning.</p>
+  </section>
+
+  <div class="gallery-row">
+    <div class="gallery-line-v"></div>
+    <img src="images/gallery-1.jpg" alt="Students walking to school">
+    <img src="images/gallery-2.jpg" alt="Student browsing library shelves">
+    <img src="images/gallery-3.png" alt="Empty classroom">
+    <img src="images/gallery-4.png" alt="Student in class with backpack">
+    <img src="images/gallery-5.png" alt="Students smiling at desk">
+    <img src="images/gallery-6.png" alt="Student writing in notebook">
+  </div>
+
+  <section class="at-a-glance">
+    <div class="glance-line-top-v"></div>
+
+    <h2>At A Glance</h2>
+    <p>character development, and a love for learning.</p>
+    <div class="cloud-icon">
+      <svg viewBox="0 0 64 40" xmlns="http://www.w3.org/2000/svg">
+        <path d="M16 30a10 10 0 0 1-1-19.9A12 12 0 0 1 38 8.5 9 9 0 0 1 48 17a9 9 0 0 1-1 18H16Z"/>
+      </svg>
+    </div>
+
+    <div class="stats-box">
+      <div class="stat">
+        <div class="num">1,954</div>
+        <div class="label">Year Founded</div>
+      </div>
+      <div class="stat">
+        <div class="num">934</div>
+        <div class="label">Certified teachers</div>
+      </div>
+      <div class="stat">
+        <div class="num">65,409</div>
+        <div class="label">Graduated Students</div>
+      </div>
+      <div class="stat">
+        <div class="num">289</div>
+        <div class="label">Awards winner</div>
+      </div>
+
+      <div class="glance-line-h"></div>
+      <div class="glance-line-v2"></div>
+    </div>
+
+    <p class="quote">&ldquo;Strive for Excellence, Inspire for Life&rdquo;</p>
+
+    <div class="glance-image">
+      <img src="images/glance-mockup.png" alt="Notebook and tablet illustration">
+    </div>
+  </section>
+
+  <section class="cta-banner">
+    <div class="cta-content">
+      <h3>Our Education like no other</h3>
+      <a href="#admissions">ENROLL</a>
+    </div>
+  </section>
+
+  <div class="grid-bg-wrap">
+
+    <section class="inquire">
+      <div class="inquire-icon">
+        <svg viewBox="0 0 24 24"><path d="M22 2 11 13" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 2 15 22l-4-9-9-4Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <h2>Inquire Today</h2>
+      <p>Contact Us for More Information</p>
+
+      <div class="inquire-panel">
+        <div class="mission-intro">
+          <h3>Enriching Communities</h3>
+          <p>Our mission at The Yenepoya World is to inspire and empower every student to achieve their full potential, become lifelong learners, and make positive contributions to society. We are&hellip;</p>
+          <a href="#about" class="learn-more">Learn More</a>
+          <div class="book-icon">
+            <img src="images/book-stack.png" alt="Stack of books">
+          </div>
+        </div>
+
+        <div class="mission-list">
+          <div class="mission-item active">
+            <div>
+              <h4>Mission</h4>
+              <p>Our mission at The Yenepoya World is to inspire and&hellip;</p>
+            </div>
+            <div class="arrow">
+              <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+          <div class="mission-item">
+            <div>
+              <h4>Mission</h4>
+              <p>Our mission at The Yenepoya World is to inspire and&hellip;</p>
+            </div>
+          </div>
+          <div class="mission-item">
+            <div>
+              <h4>Mission</h4>
+              <p>Our mission at The Yenepoya World is to inspire and&hellip;</p>
+            </div>
+          </div>
+          <div class="mission-item">
+            <div>
+              <h4>Mission</h4>
+              <p>Our mission at The Yenepoya World is to inspire and&hellip;</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="quick-links">
+      <a href="#academics" class="quick-link">
+        <svg viewBox="0 0 24 24"><path d="M9 2v6L4 20a1 1 0 0 0 1 2h14a1 1 0 0 0 1-2L15 8V2" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 2h8" stroke-linecap="round"/><path d="M7 15h10" stroke-linecap="round"/></svg>
+        <span>ACADEMICS</span>
+      </a>
+      <a href="#students" class="quick-link highlight">
+        <svg viewBox="0 0 24 24"><path d="M22 10 12 5 2 10l10 5 10-5Z" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>STUDENTS</span>
+      </a>
+      <a href="#admissions" class="quick-link">
+        <svg viewBox="0 0 24 24"><path d="M3 21h18M4 21V10M20 21V10M2 10l10-6 10 6" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 21v-7M12 21v-7M16 21v-7" stroke-linecap="round"/></svg>
+        <span>ADMISSIONS</span>
+      </a>
+    </div>
+
+    <section class="contact-banner">
+      <div class="contact-banner-inner">
+        <h3>Have questions or need assistance?</h3>
+        <p>Together, let&rsquo;s embark on an exciting journey of education and exploration!</p>
+        <a href="#contact">CONTACT US</a>
+      </div>
+    </section>
+
+    <section class="discover-further">
+      <div class="discover-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 7v5l3 3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <h2>Discover Further</h2>
+      <p>Explore More of The Yenepoya School Offerings</p>
+
+      <div class="discover-bg-full">
+      <div class="discover-panel">
+        <svg class="discover-connector" viewBox="0 0 1000 40" preserveAspectRatio="none">
+          <line x1="170" y1="20" x2="830" y2="20"></line>
+          <circle cx="170" cy="20" r="5"></circle>
+          <circle cx="500" cy="20" r="5"></circle>
+          <circle cx="830" cy="20" r="5"></circle>
+        </svg>
+
+        <div class="discover-cards">
+          <div class="discover-card">
+            <div class="thumb">
+              <img src="images/component-1.jpg" alt="Students in classroom">
+              <div class="badge">
+                <img src="images/gallery.png" alt="Gallery icon">
+              </div>
+            </div>
+            <h4>Gallery</h4>
+            <p>A Glimpse into TYW</p>
+          </div>
+
+          <div class="discover-card">
+            <div class="thumb">
+              <img src="images/component-2.jpg" alt="Newspaper and coffee">
+              <div class="badge">
+                <img src="images/news.png" alt="News icon">
+              </div>
+            </div>
+            <h4>News</h4>
+            <p>Latest News and Updates</p>
+          </div>
+
+          <div class="discover-card">
+            <div class="thumb">
+              <img src="images/component-3.jpg" alt="Stack of notebooks">
+              <div class="badge">
+                <img src="images/blogs.png" alt="Blogs icon">
+              </div>
+            </div>
+            <h4>Blogs</h4>
+            <p>Latest News and Updates</p>
+          </div>
+        </div>
+
+        <div class="discover-btn-wrap">
+          <a href="#discover">LEARN MORE</a>
+        </div>
+      </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ============ Testimonials section (FIXED markup) ============ -->
+  <section class="testimonials">
+    <div class="testimonials-inner">
+      <div class="testimonials-text">
+        <div class="chat-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-8 8 8 8 0 0 1-3.5-.8L4 20l1-4.6A8 8 0 1 1 21 12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h2>Testimonials</h2>
+        <p>Contact Us for More Information</p>
+      </div>
+
+      <div class="testimonials-images">
+        <div class="img-slider img-slider-left">
+          <div class="img-slider-track">
+            <img src="images/testimonials-1.jpg" alt="Children praying before a meal">
+            <img src="images/testimonials-2.jpg" alt="Children eating lunch together">
+            <img src="images/testimonials-3.jpg" alt="Children playing together">
+          </div>
+        </div>
+        <div class="img-slider img-slider-right">
+          <div class="img-slider-track">
+            <img src="images/testimonials-right-1.jpg" alt="Smiling child resting chin on hands">
+            <img src="images/testimonials-right-2.jpg" alt="Child smiling in classroom">
+            <img src="images/testimonials-right-3.jpg" alt="Child playing outdoors">
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-quote-box">
+        <div class="quote-mark">&ldquo;</div>
+        <p class="quote-author">&mdash; Anonymous</p>
+        <p class="quote-text">My child&rsquo;s physical and mental fitness has improved in the last few years. His grades have improved and his concentration power has increased. He also looks happier and more confident now. I must thank St. Michael&rsquo;s School for focusing on a holistic development of children.</p>
+
+        <button class="testimonial-arrow" aria-label="Next testimonial">
+          <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+  <!-- ============ end testimonials fix ============ -->
+
+  <section class="inquire-form-intro">
+    <div class="inquire-icon">
+      <svg viewBox="0 0 24 24"><path d="M22 2 11 13" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 2 15 22l-4-9-9-4Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <h2>Inquire Today</h2>
+    <p>Contact Us for More Information</p>
+  </section>
+
+  <section class="inquire-form">
+    <div class="inquire-form-card">
+      <form>
+        <div class="form-field">
+          <label for="full-name">Full Name</label>
+          <input type="text" id="full-name" name="full-name">
+        </div>
+        <div class="form-field">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email">
+        </div>
+        <div class="form-field">
+          <label for="mobile">Mobile Number</label>
+          <input type="tel" id="mobile" name="mobile">
+        </div>
+        <div class="form-field">
+          <label for="grade">Grade</label>
+          <input type="text" id="grade" name="grade">
+        </div>
+        <div class="form-field">
+          <label for="dob">Child's Year Of Birth</label>
+          <input type="text" id="dob" name="dob">
+        </div>
+        <div class="form-field">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="1"></textarea>
+        </div>
+        <button type="submit">SUBMIT</button>
+      </form>
+    </div>
+  </section>
+
+  <section class="site-close">
+    <img class="mark" src="images/logo.png" alt="The Yenepoya World logo mark">
+  </section>
+
+  <section class="footer-cta">
+    <svg class="footer-cta-corner" viewBox="0 0 260 260" preserveAspectRatio="none">
+      <line x1="260" y1="0" x2="80" y2="0"></line>
+      <line x1="260" y1="0" x2="0" y2="80"></line>
+      <line x1="260" y1="40" x2="40" y2="0"></line>
+    </svg>
+    <h2>The Yenopoya World</h2>
+    <p>Our dedicated team of educators is committed to providing a supportive and stimulating environment.</p>
+    <a href="#contact">CONTACT US</a>
+  </section>
+
+  <footer class="footer-main">
+    <div class="footer-links-row">
+      <div class="footer-col">
+        <a href="#about">About Us</a>
+        <a href="#director">Message from Director/ Principal</a>
+        <a href="#infrastructure">Infrastructure &amp; Facilities</a>
+        <a href="#faculty">Faculty &amp; Staff</a>
+      </div>
+      <div class="footer-col">
+        <a href="#curriculum">Curriculum</a>
+        <a href="#learning-environment">Learning Environment</a>
+        <a href="#hall-of-fame">Hall of Fame</a>
+        <a href="#fee-structure">Fee Structure</a>
+      </div>
+      <div class="footer-col">
+        <a href="#announcements">Announcements</a>
+        <a href="#admission-notice">Admission Notice</a>
+        <a href="#parents-speak">Parent's Speak</a>
+        <a href="#transfer-certificate">Transfer Certificate</a>
+      </div>
+      <div class="footer-social">
+        <a href="#" aria-label="Facebook">
+          <svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.4h-1.2c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12Z"/></svg>
+        </a>
+        <a href="#" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill-rule="evenodd" clip-rule="evenodd"><path d="M12 2c-2.7 0-3.1 0-4.1.1-1.1.1-1.8.2-2.4.4a5 5 0 0 0-1.8 1.2A5 5 0 0 0 2.5 5.5c-.2.6-.4 1.3-.4 2.4C2 8.9 2 9.3 2 12s0 3.1.1 4.1c.1 1.1.2 1.8.4 2.4a5 5 0 0 0 1.2 1.8 5 5 0 0 0 1.8 1.2c.6.2 1.3.4 2.4.4C8.9 22 9.3 22 12 22s3.1 0 4.1-.1c1.1-.1 1.8-.2 2.4-.4a5 5 0 0 0 1.8-1.2 5 5 0 0 0 1.2-1.8c.2-.6.4-1.3.4-2.4.1-1 .1-1.4.1-4.1s0-3.1-.1-4.1c-.1-1.1-.2-1.8-.4-2.4a5 5 0 0 0-1.2-1.8A5 5 0 0 0 18.5 2.5c-.6-.2-1.3-.4-2.4-.4C15.1 2 14.7 2 12 2Zm0 1.8c2.6 0 3 0 4 .1 1 .1 1.5.2 1.9.4.5.2.8.4 1.2.7.4.4.6.7.7 1.2.2.4.3.9.4 1.9.1 1 .1 1.4.1 4s0 3-.1 4c-.1 1-.2 1.5-.4 1.9-.2.5-.4.8-.7 1.2-.4.4-.7.6-1.2.7-.4.2-.9.3-1.9.4-1 .1-1.4.1-4 .1s-3 0-4-.1c-1-.1-1.5-.2-1.9-.4a3.3 3.3 0 0 1-1.2-.7 3.3 3.3 0 0 1-.7-1.2c-.2-.4-.3-.9-.4-1.9-.1-1-.1-1.4-.1-4s0-3 .1-4c.1-1 .2-1.5.4-1.9.2-.5.4-.8.7-1.2.4-.4.7-.6 1.2-.7.4-.2.9-.3 1.9-.4 1-.1 1.4-.1 4-.1Zm0 3.05a5.15 5.15 0 1 0 0 10.3 5.15 5.15 0 0 0 0-10.3Zm0 1.8a3.35 3.35 0 1 1 0 6.7 3.35 3.35 0 0 1 0-6.7Zm5.35-3.6a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4Z"/></svg>
+        </a>
+        <a href="#" aria-label="YouTube">
+          <svg viewBox="0 0 24 24"><path d="M23 12s0-3.6-.5-5.3a3 3 0 0 0-2.1-2.1C18.7 4 12 4 12 4s-6.7 0-8.4.6A3 3 0 0 0 1.5 6.7C1 8.4 1 12 1 12s0 3.6.5 5.3a3 3 0 0 0 2.1 2.1C5.3 20 12 20 12 20s6.7 0 8.4-.6a3 3 0 0 0 2.1-2.1C23 15.6 23 12 23 12ZM10 15.5v-7l6 3.5-6 3.5Z"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <hr class="footer-divider">
+    <p class="footer-copyright">Copyright &copy; 2024 The Yenepoya World. All Rights Reserved.</p>
+  </footer>
+
+</body>
+</html>
